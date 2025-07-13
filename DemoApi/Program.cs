@@ -1,4 +1,5 @@
 using Demo.Data;
+using Demo.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+// 全域例外管理
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 
