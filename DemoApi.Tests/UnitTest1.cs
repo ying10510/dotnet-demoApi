@@ -1,4 +1,6 @@
-﻿namespace DemoApi.Tests;
+﻿using Xunit;
+
+namespace DemoApi.Tests;
 
 public class UnitTest1
 {
