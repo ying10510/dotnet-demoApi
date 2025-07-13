@@ -10,6 +10,9 @@ builder.Services.AddOpenApi();
 // 註冊 MVC 控制器服務
 builder.Services.AddControllers();
 
+// DI 註冊 AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 // MSSQL 資料庫連線字串
 // 指定 Migration 專案名稱(確保執行階段，提供 DbContext 實例給服務使用)
 var connectionString = builder.Configuration.GetConnectionString("MSSQL");
