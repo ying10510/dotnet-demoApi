@@ -1,8 +1,18 @@
+using Demo.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// MSSQL 資料庫連線字串
+// 指定 Migration 專案名稱(確保執行階段，提供 DbContext 實例給服務使用)
+var connectionString = builder.Configuration.GetConnectionString("MSSQL");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString, sqlOptions =>
+    sqlOptions.MigrationsAssembly("DemoApi")));
 
 var app = builder.Build();
 
@@ -21,7 +31,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
