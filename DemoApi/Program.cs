@@ -1,5 +1,9 @@
 using Demo.Data;
 using Demo.Extensions;
+using Demo.Repositories;
+using Demo.Repositories.Impl;
+using Demo.Services;
+using Demo.Services.Impl;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,12 @@ builder.Services.AddOpenApi();
 
 // 註冊 MVC 控制器服務
 builder.Services.AddControllers();
+
+// DI 註冊 Service
+builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
+
+// DI 註冊 Repository
+builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
 
 // DI 註冊 AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));

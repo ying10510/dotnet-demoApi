@@ -1,28 +1,92 @@
 using Microsoft.AspNetCore.Mvc;
-using Demo.Data;
+using Demo.Dtos.Member;
+using Demo.Services;
+
+namespace Demo.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MemberController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IMemberService _memberService;
 
-    public MemberController(AppDbContext context)
+    public MemberController(IMemberService memberService)
     {
-        _context = context;
+        _memberService = memberService;
     }
 
+    /// <summary>
+    /// 建立會員
+    /// </summary>
+    /// <param name="memberCreateDto"></param>
+    /// <returns></returns>
+    /// <exception cref="AppException"></exception>
+    [HttpPost]
+    public async Task<ActionResult<MemberReadDto>> CreateMember([FromBody] MemberCreateDto memberCreateDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("request body is invalid");
+        }
+
+        var created = await _memberService.Create(memberCreateDto);
+        return CreatedAtAction(nameof(GetMember), new { id = created.Id }, created);
+    }
+
+    /// <summary>
+    /// 刪除會員
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteMember(string id)
+    {
+        await _memberService.Delete(id);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// 查詢所有會員
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<ActionResult<List<MemberReadDto>>> GetMember()
     {
-        return Ok(_context.Members.ToList());
+        var members = await _memberService.GetAll();
+        return Ok(members);
     }
 
+    /// <summary>
+    /// 查詢指定會員
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
-    public IActionResult GetById(string id)
+    public async Task<ActionResult<MemberReadDto>> GetMemberById(string id)
     {
-        var member = _context.Members.Find(id);
-        if (member == null) return NotFound();
+        var member = await _memberService.GetById(id);
         return Ok(member);
     }
+
+    /// <summary>
+    /// 更新指定會員資料
+    /// </summary>
+    /// <param name="id">會員Id</param>
+    /// <param name="memberUpdateDto">會員更新資料</param>
+    /// <returns></returns>
+    [HttpPut("{id}")]
+    public async Task<ActionResult<MemberReadDto>> UpdateMember(string id, [FromBody] MemberUpdateDto memberUpdateDto)
+    {
+        // 檢查 null
+        if (memberUpdateDto == null)
+            return BadRequest("請提供更新資料。");
+
+        // 檢查模型驗證（例如 [Required]、[MaxLength] 等）
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var member = await _memberService.Update(id, memberUpdateDto);
+        return Ok(member);
+    }
+
 }
