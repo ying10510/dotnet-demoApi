@@ -52,4 +52,4 @@ _ReSharper*/
 **/*.env
 
 # SQL
-sql_data/
+*/sql_data/
