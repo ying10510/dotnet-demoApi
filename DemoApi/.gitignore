@@ -1,0 +1,48 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Logs
+*.log
+
+# Secrets
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Configuration
+*.DotSettings.user
+
+# Auto-generated
+Generated_Code/
+
+# Packages
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+*.cache
+*.tmp
+
+# Entity Framework Migrations snapshot files (optional)
+Migrations/*.Designer.cs
+
+# Others
+_ReSharper*/
+*.vs/
+*.DS_Store
