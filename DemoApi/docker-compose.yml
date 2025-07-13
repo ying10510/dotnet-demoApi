@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: dotnet_demoApi_sqledge
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "1"
+      SA_PASSWORD: "sqlServer@123" # 密碼需符合強度要求
+    volumes:
+      - ./sql_data:/var/opt/mssql
+    restart: unless-stopped

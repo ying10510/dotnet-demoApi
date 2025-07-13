@@ -46,3 +46,10 @@ Migrations/*.Designer.cs
 _ReSharper*/
 *.vs/
 *.DS_Store
+
+# Docker
+**/docker-compose.override.yml
+**/*.env
+
+# SQL
+sql_data/
