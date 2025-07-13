@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// 註冊 MVC 控制器服務
+builder.Services.AddControllers();
+
 // MSSQL 資料庫連線字串
 // 指定 Migration 專案名稱(確保執行階段，提供 DbContext 實例給服務使用)
 var connectionString = builder.Configuration.GetConnectionString("MSSQL");
@@ -42,6 +45,9 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+// 註冊 MVC 控制器(對應 attribute routing)
+app.MapControllers();
 
 app.Run();
 
