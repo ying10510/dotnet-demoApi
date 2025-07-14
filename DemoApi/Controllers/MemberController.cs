@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Demo.Dtos.Member;
 using Demo.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demo.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class MemberController : ControllerBase
 {

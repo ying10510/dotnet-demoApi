@@ -1,10 +1,15 @@
+using System.Text;
 using Demo.Data;
 using Demo.Extensions;
 using Demo.Repositories;
 using Demo.Repositories.Impl;
 using Demo.Services;
 using Demo.Services.Impl;
+using DemoApi.Services;
+using DemoApi.Services.Impl;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +26,28 @@ builder.Services.AddSwaggerGen();
 
 // DI 註冊 Service
 builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
+builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
+builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
 
 // DI 註冊 Repository
 builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
+
+// 設定 JWT 認證
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        // token 驗證設定
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,  // 驗證發行者
+            ValidateAudience = true,  // 驗證受眾
+            ValidateLifetime = true,  // 驗證過期時間
+            ValidateIssuerSigningKey = true,  // 驗證簽名
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  // 設定發行者
+            ValidAudience = builder.Configuration["Jwt:Audience"],  // 設定受眾
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))  // 設定密鑰
+        };
+    });
 
 // DI 註冊 AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
@@ -73,6 +97,10 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+// 註冊身份驗證和授權(順序要先 Auth 再 Authorize)
+app.UseAuthentication();
+app.UseAuthorization();
 
 // 註冊 MVC 控制器(對應 attribute routing)
 app.MapControllers();
