@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Demo.Dtos.Member;
+namespace DemoApi.Dtos.Member;
 
 public class MemberUpdateDto
 {

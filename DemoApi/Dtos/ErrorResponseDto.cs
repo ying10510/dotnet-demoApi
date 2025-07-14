@@ -1,4 +1,4 @@
-namespace Demo.Dtos;
+namespace DemoApi.Dtos;
 
 public class ErrorResponseDto
 {

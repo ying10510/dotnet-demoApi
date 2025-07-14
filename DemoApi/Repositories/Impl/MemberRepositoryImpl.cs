@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Demo.Data;
-using Demo.Dtos.Member;
-using Demo.Models;
-using Demo.Services;
+using DemoApi.Data;
+using DemoApi.Dtos.Member;
+using DemoApi.Models;
+using DemoApi.Services;
 
-namespace Demo.Repositories.Impl;
+namespace DemoApi.Repositories.Impl;
 
 public class MemberRepositoryImpl : IMemberRepository
 {

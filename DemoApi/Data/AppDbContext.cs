@@ -1,7 +1,7 @@
-using Demo.Models;
+using DemoApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Demo.Data;
+namespace DemoApi.Data;
 
 public class AppDbContext : DbContext
 {

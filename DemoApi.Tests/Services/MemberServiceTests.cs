@@ -1,14 +1,14 @@
 using AutoMapper;
-using Demo.Data;
-using Demo.Mappers;
-using Demo.Models;
-using Demo.Repositories;
-using Demo.Services.Impl;
+using DemoApi.Data;
+using DemoApi.Mappers;
+using DemoApi.Models;
+using DemoApi.Repositories;
+using DemoApi.Services.Impl;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
-namespace Demo.Tests.Services;
+namespace DemoApi.Tests.Services;
 
 public class MemberServiceTests
 {

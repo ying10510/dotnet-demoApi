@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Demo.Dtos.Member;
-using Demo.Services;
+using DemoApi.Dtos.Member;
+using DemoApi.Services;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Demo.Controllers;
+namespace DemoApi.Controllers;
 
 [ApiController]
 [Authorize]

@@ -1,8 +1,8 @@
 using AutoMapper;
-using Demo.Dtos.Member;
-using Demo.Models;
+using DemoApi.Dtos.Member;
+using DemoApi.Models;
 
-namespace Demo.Mappers;
+namespace DemoApi.Mappers;
 
 public class MemberMapper : Profile
 {

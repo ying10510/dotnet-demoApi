@@ -1,8 +1,7 @@
+using DemoApi.Exceptions;
+using DemoApi.Dtos;
 
-using Demo.Exceptions;
-using Demo.Dtos;
-
-namespace Demo.Middlewares;
+namespace DemoApi.Middlewares;
 
 public class GlobalExceptionMiddleware
 {

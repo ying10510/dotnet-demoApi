@@ -1,4 +1,4 @@
-namespace Demo.Exceptions;
+namespace DemoApi.Exceptions;
 
 public class AppException : Exception
 {

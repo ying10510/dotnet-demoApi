@@ -1,4 +1,4 @@
-namespace Demo.Dtos.Member;
+namespace DemoApi.Dtos.Member;
 
 public class MemberReadDto
 {

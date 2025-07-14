@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using Demo.Models;
+using DemoApi.Models;
 
-namespace Demo.Repositories;
+namespace DemoApi.Repositories;
 
 public interface IMemberRepository
 {

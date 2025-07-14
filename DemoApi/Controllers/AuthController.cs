@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using DemoApi.Services;
 using DemoApi.Dtos.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Demo.Repositories;
-using Demo.Exceptions;
+using DemoApi.Repositories;
+using DemoApi.Exceptions;
 
-namespace Demo.Controllers;
+namespace DemoApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

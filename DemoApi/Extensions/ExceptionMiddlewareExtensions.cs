@@ -1,6 +1,6 @@
-using Demo.Middlewares;
+using DemoApi.Middlewares;
 
-namespace Demo.Extensions;
+namespace DemoApi.Extensions;
 
 public static class ExceptionMiddlewareExtensions
 {

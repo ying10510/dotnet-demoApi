@@ -1,6 +1,6 @@
-using Demo.Dtos.Member;
+using DemoApi.Dtos.Member;
 
-namespace Demo.Services;
+namespace DemoApi.Services;
 
 public interface IMemberService
 {

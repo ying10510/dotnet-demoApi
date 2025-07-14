@@ -1,10 +1,8 @@
 using System.Text;
-using Demo.Data;
-using Demo.Extensions;
-using Demo.Repositories;
-using Demo.Repositories.Impl;
-using Demo.Services;
-using Demo.Services.Impl;
+using DemoApi.Data;
+using DemoApi.Extensions;
+using DemoApi.Repositories;
+using DemoApi.Repositories.Impl;
 using DemoApi.Services;
 using DemoApi.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

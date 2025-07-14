@@ -1,5 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
-using Demo.Exceptions;
+using DemoApi.Exceptions;
 
 namespace DemoApi.Services.Impl;
 

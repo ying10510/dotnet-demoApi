@@ -1,12 +1,12 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Demo.Data;
-using Demo.Dtos.Member;
-using Demo.Exceptions;
-using Demo.Models;
-using Demo.Repositories;
+using DemoApi.Data;
+using DemoApi.Dtos.Member;
+using DemoApi.Exceptions;
+using DemoApi.Models;
+using DemoApi.Repositories;
 
-namespace Demo.Services.Impl;
+namespace DemoApi.Services.Impl;
 
 public class MemberServiceImpl : IMemberService
 {
