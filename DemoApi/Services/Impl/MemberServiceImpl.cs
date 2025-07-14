@@ -13,12 +13,14 @@ public class MemberServiceImpl : IMemberService
     private readonly AppDbContext _appDbContext;
     private readonly IMapper _mapper;
     private readonly IMemberRepository _memberRepository;
+    private readonly IPasswordService _passwordService;
 
-    public MemberServiceImpl(AppDbContext appDbContext, IMapper mapper, IMemberRepository memberRepository)
+    public MemberServiceImpl(AppDbContext appDbContext, IMapper mapper, IMemberRepository memberRepository, IPasswordService passwordService)
     {
         _appDbContext = appDbContext;
         _mapper = mapper;
         _memberRepository = memberRepository;
+        _passwordService = passwordService;
     }
 
     /// <summary>
@@ -33,6 +35,7 @@ public class MemberServiceImpl : IMemberService
 
         // 密碼加密
         var member = _mapper.Map<Member>(memberCreateDto);
+        member.SetPassword(await _passwordService.PasswordHash(memberCreateDto.Password));
 
         try
         {

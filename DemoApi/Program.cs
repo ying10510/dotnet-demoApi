@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
+builder.Services.AddScoped<IPasswordService, PasswordServiceImpl>();
 
 // DI 註冊 Repository
 builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
