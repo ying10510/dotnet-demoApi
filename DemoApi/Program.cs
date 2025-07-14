@@ -15,6 +15,10 @@ builder.Services.AddOpenApi();
 // 註冊 MVC 控制器服務
 builder.Services.AddControllers();
 
+// 加入 Swagger 產生器
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // DI 註冊 Service
 builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
 
@@ -37,6 +41,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // 啟用 Swagger Middleware（開發環境用）
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Order System API V1");
+    });
 }
 
 // 全域例外管理
