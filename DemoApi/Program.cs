@@ -7,13 +7,28 @@ using DemoApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using StackExchange.Redis;
+
+// debug
+// Serilog.Debugging.SelfLog.Enable(msg => Console.Error.WriteLine($"[SerilogSelfLog] {msg}"));
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// 設定 Serilog 日誌(讀取 appsettings.json 設定)
+builder.Host.UseSerilog((ctx, services, config) =>
+{
+    config
+    .ReadFrom.Configuration(ctx.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.WithProperty("Application", Assembly.GetExecutingAssembly().GetName().Name)
+    .Enrich.WithProperty("Environment", ctx.HostingEnvironment.EnvironmentName)
+    .Enrich.FromLogContext();
+});
 
 // 自動註冊所有 IAppService / IAppRepository 實作
 builder.Services.Scan(scan => scan
@@ -113,6 +128,17 @@ if (app.Environment.IsDevelopment())
 
 // 全域例外管理
 app.UseGlobalExceptionHandler();
+
+// 啟用 Serilog
+app.UseSerilogRequestLogging(options =>
+{
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+    {
+        diagnosticContext.Set("UserId", httpContext.User?.Identity?.Name ?? "Anonymous");
+        diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+        diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+    };
+});
 
 app.UseHttpsRedirection();
 
