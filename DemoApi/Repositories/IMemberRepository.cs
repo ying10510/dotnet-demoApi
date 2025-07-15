@@ -3,7 +3,7 @@ using DemoApi.Models;
 
 namespace DemoApi.Repositories;
 
-public interface IMemberRepository
+public interface IMemberRepository : IAppRepository
 {
     Task Create(Member member);
     Task Delete(Member member);

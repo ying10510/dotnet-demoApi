@@ -2,7 +2,7 @@ using DemoApi.Dtos.Member;
 
 namespace DemoApi.Services;
 
-public interface IMemberService
+public interface IMemberService : IAppService
 {
     Task<MemberReadDto> Create(MemberCreateDto memberCreateDto);
     Task<bool> Delete(string id);

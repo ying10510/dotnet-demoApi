@@ -1,10 +1,9 @@
+using System.Reflection;
 using System.Text;
 using DemoApi.Data;
 using DemoApi.Extensions;
 using DemoApi.Repositories;
-using DemoApi.Repositories.Impl;
 using DemoApi.Services;
-using DemoApi.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +15,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// 自動註冊所有 IAppService / IAppRepository 實作
+builder.Services.Scan(scan => scan
+    .FromApplicationDependencies(assembly =>
+    {
+        // Console.WriteLine($"Scanning: {assembly.FullName}");
+        return assembly == Assembly.GetExecutingAssembly();
+    })
+    .AddClasses(classes => classes.AssignableTo<IAppService>())
+        .AsImplementedInterfaces()
+        .WithScopedLifetime()
+    .AddClasses(classes => classes.AssignableTo<IAppRepository>())
+        .AsImplementedInterfaces()
+        .WithScopedLifetime()
+);
+
 // 註冊 MVC 控制器服務
 builder.Services.AddControllers();
 
@@ -23,15 +37,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DI 註冊 Service
-builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
-builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
-builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
-builder.Services.AddScoped<IPasswordService, PasswordServiceImpl>();
-builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistServiceImpl>();
+// // DI 註冊 Service
+// builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
+// builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
+// builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
+// builder.Services.AddScoped<IPasswordService, PasswordServiceImpl>();
+// builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistServiceImpl>();
 
-// DI 註冊 Repository
-builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
+// // DI 註冊 Repository
+// builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
 
 // 設定 JWT 認證
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
