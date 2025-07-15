@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 using DemoApi.Data;
 using DemoApi.Extensions;
+using DemoApi.Middlewares;
 using DemoApi.Repositories;
 using DemoApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -128,6 +129,9 @@ if (app.Environment.IsDevelopment())
 
 // 全域例外管理
 app.UseGlobalExceptionHandler();
+
+// 紀錄 Request 處理時間
+app.UseMiddleware<RequestTimingMiddleware>();
 
 // 啟用 Serilog
 app.UseSerilogRequestLogging(options =>
