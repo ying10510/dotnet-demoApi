@@ -8,6 +8,7 @@ using DemoApi.Services.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IMemberService, MemberServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IJwtService, JwtServiceImpl>();
 builder.Services.AddScoped<IPasswordService, PasswordServiceImpl>();
+builder.Services.AddScoped<ITokenBlacklistService, TokenBlacklistServiceImpl>();
 
 // DI 註冊 Repository
 builder.Services.AddScoped<IMemberRepository, MemberRepositoryImpl>();
@@ -46,6 +48,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],  // 設定受眾
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))  // 設定密鑰
         };
+
+        // redis token 黑名單檢查設定
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var accessToken = context.Request.Headers["Authorization"]
+                    .ToString().Replace("Bearer ", "");
+
+                var redis = context.HttpContext.RequestServices.GetRequiredService<ITokenBlacklistService>();
+
+                if (await redis.IsTokenBlacklisted(accessToken))
+                {
+                    context.Fail("This token has been revoked.");
+                }
+
+            }
+        };
     });
 
 // DI 註冊 AutoMapper
@@ -57,6 +77,10 @@ var connectionString = builder.Configuration.GetConnectionString("MSSQL");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString, sqlOptions =>
     sqlOptions.MigrationsAssembly("DemoApi")));
+
+// redis 連線註冊
+var redis = ConnectionMultiplexer.Connect("localhost:6379");
+builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
 
 var app = builder.Build();
 

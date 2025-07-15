@@ -43,4 +43,17 @@ public class AuthController : ControllerBase
             Name = member.Name
         });
     }
+
+    /// <summary>
+    /// 登出
+    /// </summary>
+    /// <returns></returns>
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var authorizationHeader = HttpContext.Request.Headers.Authorization.ToString();
+        await _authService.Logout(authorizationHeader);
+        return Ok(new { message = "Logout Success" });
+    }
 }

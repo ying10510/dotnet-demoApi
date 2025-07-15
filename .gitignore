@@ -53,3 +53,6 @@ _ReSharper*/
 
 # SQL
 */sql_data/
+
+# Redis
+*/redis-data/

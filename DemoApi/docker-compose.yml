@@ -12,3 +12,12 @@ services:
     volumes:
       - ./sql_data:/var/opt/mssql
     restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    container_name: dotnet_demoApi_redis
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - ./redis-data:/data
